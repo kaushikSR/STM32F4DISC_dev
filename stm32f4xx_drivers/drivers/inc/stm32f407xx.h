@@ -103,6 +103,9 @@ typedef struct {
  */
 
 #define SPI1_BASEADDR						(APB2_BASEADDR + 0x3000)
+#define SPI4_BASEADDR						(APB2_BASEADDR + 0x3400)
+#define SPI5_BASEADDR						(APB2_BASEADDR + 0x5000)
+#define SPI6_BASEADDR						(APB2_BASEADDR + 0x5400)
 #define USART1_BASEADDR						(APB2_BASEADDR + 0x1000)
 #define USART6_BASEADDR						(APB2_BASEADDR + 0x1400)
 #define EXTI_BASEADDR						(APB2_BASEADDR + 0x3C00)
@@ -210,7 +213,7 @@ typedef struct {
 #define GPIOK 								((GPIO_RegDef_t*)GPIOK_BASEADDR)
 
 /*Useful general MACROS*/
-#define RESOLVE(x)						    ( (x) == GPIOA ? BIT0: \
+#define RESOLVE_GPIO(x)						    ( (x) == GPIOA ? BIT0: \
 											(x) == GPIOB ? BIT1: \
 											(x) == GPIOC ? BIT2: \
 										    (x) == GPIOD ? BIT3: \
@@ -235,13 +238,14 @@ typedef struct {
  * @param[in] GPIOx(A..J,K)
  ***/
 
-#define GPIO_PCLK_EN(x)						(RCC->AHB1ENR |=(RESOLVE((x))));
-#define GPIO_PCLK_DI(x)						(RCC->AHB1ENR &=~(RESOLVE((x))));
+#define GPIO_PCLK_EN(x)						(RCC->AHB1ENR |=(RESOLVE_GPIO((x))));
+#define GPIO_PCLK_DI(x)						(RCC->AHB1ENR &=~(RESOLVE_GPIO((x))));
 
 /***GPIO Port reset Macro
  * @param[in] GPIOx(A..J,K)
  ***/
-#define GPIO_REG_RESET(x)					do{RCC->AHB1RSTR |=(RESOLVE((x)));RCC->AHB1RSTR &=~(RESOLVE((x)));}while(0)
+#define GPIO_REG_RESET(x)					do{RCC->AHB1RSTR |=(RESOLVE_GPIO((x)));\
+											RCC->AHB1RSTR &=~(RESOLVE_GPIO((x)));}while(0)
 
 /********************External interrupt/event controller (EXTI)******************/
 
@@ -297,6 +301,27 @@ typedef struct {
 #define I2C1_PLCK_DI()						(RCC->APB1ENR &=~(BIT21))
 #define I2C2_PLCK_DI()						(RCC->APB1ENR &=~(BIT22))
 #define I2C3_PLCK_DI()						(RCC->APB1ENR &=~(BIT23))
+/*********************************Serial peripheral interface (SPI)**************************************/
+
+typedef struct {
+	__IO uint32_t CR1;/*SPI control register 1 (SPI_CR1), Address offset: 0x00*/
+	__IO uint32_t CR2;/*SPI control register 2 (SPI_CR2), Address offset: 0x04*/
+	__IO uint32_t SR;/*SPI status register (SPI_SR), Address offset: 0x08*/
+	__IO uint32_t DR;/*SPI data register (SPI_DR), Address offset: 0x0C*/
+	__IO uint32_t CRCPR; /*SPI CRC polynomial register (SPI_CRCPR), Address offset: 0x10*/
+	__IO uint32_t RXCRCR;/*SPI RX CRC register (SPI_RXCRCR), Address offset: 0x14*/
+	__IO uint32_t TXCRCR;/*SPI TX CRC register (SPI_TXCRCR), Address offset: 0x18*/
+	__IO uint32_t I2SCFGR;/*SPI_I2S configuration register (SPI_I2SCFGR), Address offset: 0x1C*/
+	__IO uint32_t I2SPR; /*SPI_I 2 S prescaler register (SPI_I2SPR), Address offset: 0x20*/
+
+} SPI_RegDef_t;
+
+#define SPI1								((SPI_RegDef_t*)SPI1_BASEADDR)
+#define SPI2								((SPI_RegDef_t*)SPI2_BASEADDR)
+#define SPI3								((SPI_RegDef_t*)SPI3_BASEADDR)
+#define SPI4								((SPI_RegDef_t*)SPI3_BASEADDR)
+#define SPI5								((SPI_RegDef_t*)SPI3_BASEADDR)
+#define SPI6								((SPI_RegDef_t*)SPI3_BASEADDR)
 
 /***Clock ENABLE/DISABLE macros for SPI***/
 
@@ -333,9 +358,7 @@ typedef struct {
  * TODO: Add the remaining IRQ numbers
  * */
 
-
-
-typedef enum{
+typedef enum {
 	EXTI0 = 6U,
 	EXTI1 = 7U,
 	EXTI2 = 8U,
