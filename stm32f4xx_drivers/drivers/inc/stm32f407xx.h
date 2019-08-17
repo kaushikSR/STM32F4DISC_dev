@@ -212,7 +212,7 @@ typedef struct {
 #define GPIOJ 								((GPIO_RegDef_t*)GPIOJ_BASEADDR)
 #define GPIOK 								((GPIO_RegDef_t*)GPIOK_BASEADDR)
 
-/*Useful general MACROS*/
+/*Macro to resolve bit number based on GPIO Port*/
 #define RESOLVE_GPIO(x)						    ( (x) == GPIOA ? BIT0: \
 											(x) == GPIOB ? BIT1: \
 											(x) == GPIOC ? BIT2: \
@@ -238,13 +238,13 @@ typedef struct {
  * @param[in] GPIOx(A..J,K)
  ***/
 
-#define GPIO_PCLK_EN(x)						(RCC->AHB1ENR |=(RESOLVE_GPIO((x))));
-#define GPIO_PCLK_DI(x)						(RCC->AHB1ENR &=~(RESOLVE_GPIO((x))));
+#define GPIO_PCLK_EN(x)						(RCC->AHB1ENR |=(RESOLVE_GPIO((x))))
+#define GPIO_PCLK_DI(x)						(RCC->AHB1ENR &=~(RESOLVE_GPIO((x))))
 
 /***GPIO Port reset Macro
  * @param[in] GPIOx(A..J,K)
  ***/
-#define GPIO_REG_RESET(x)					do{RCC->AHB1RSTR |=(RESOLVE_GPIO((x)));\
+#define GPIO_PERI_RESET(x)					do{RCC->AHB1RSTR |=(RESOLVE_GPIO((x)));\
 											RCC->AHB1RSTR &=~(RESOLVE_GPIO((x)));}while(0)
 
 /********************External interrupt/event controller (EXTI)******************/
@@ -323,6 +323,11 @@ typedef struct {
 #define SPI5								((SPI_RegDef_t*)SPI3_BASEADDR)
 #define SPI6								((SPI_RegDef_t*)SPI3_BASEADDR)
 
+/*Macro to resolve bit number based on SPI peripheral*/
+#define RESOLVE_SPI_BIT(x)					( (x) == SPI1 ? BIT12: \
+											(x) == SPI2 ? BIT14: \
+											(x) == SPI3 ? BIT15: -1)
+
 /***Clock ENABLE/DISABLE macros for SPI***/
 
 #define SPI1_PCLK_EN()						(RCC->APB2ENR |=(BIT12))
@@ -332,6 +337,10 @@ typedef struct {
 #define SPI1_PCLK_DI()						(RCC->APB2ENR &=~(BIT12))
 #define SPI2_PCLK_DI()						(RCC->APB1ENR &=~(BIT14))
 #define SPI3_PCLK_DI()						(RCC->APB1ENR &=~(BIT15))
+
+#define SPI1_DEINIT()						do{ RCC->APB2RSTR |= (BIT12); RCC->APB2RSTR &= ~(BIT12);}while(0)
+#define SPI2_DEINIT() 						do{ RCC->APB1RSTR |= (BIT14); RCC->APB1RSTR &= ~(BIT14);}while(0)
+#define SPI3_DEINIT()						do{ RCC->APB1RSTR |= (BIT15); RCC->APB1RSTR &= ~(BIT15);}while(0)
 
 /***Clock ENABLE/DISABLE macros for UART/USART ***/
 
