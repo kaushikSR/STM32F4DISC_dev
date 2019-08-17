@@ -31,6 +31,7 @@ void GPIO_PeriClockControl(GPIO_RegDef_t* pGPIOx, status EnOrDi) {
  * */
 
 void GPIO_Init(GPIO_Handle_t* pGPIOHandle) {
+	GPIO_PeriClockControl(pGPIOHandle->pGPIOx,ENABLE);
 	//Configure the GPIO PIN Mode
 	uint8_t pin = (uint8_t) pGPIOHandle->GPIO_PinConfig.GPIO_PinNumber;
 	if (pGPIOHandle->GPIO_PinConfig.GPIO_PinMode <= GPIO_MODE_ANALOG) {
@@ -98,7 +99,7 @@ void GPIO_Init(GPIO_Handle_t* pGPIOHandle) {
  * */
 
 void GPIO_DeInit(GPIO_RegDef_t* pGPIOx) {
-		GPIO_REG_RESET(pGPIOx);
+		GPIO_PERI_RESET(pGPIOx);
 }
 
 /*

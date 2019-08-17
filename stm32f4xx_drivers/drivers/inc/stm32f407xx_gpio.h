@@ -220,7 +220,7 @@ void GPIO_ToggleOutputPin(GPIO_RegDef_t* pGPIOx, GPIO_Pin_No PinNumber);
  * @param[in]: ENABLE/DISABLE
  * @return : None
  */
-void GPIO_IRQITConfig(uint8_t IRQNumber, uint8_t EnOrDi);
+void GPIO_IRQITConfig(uint8_t IRQNumber, status EnOrDi);
 
 /*
  * @brief : This function sets the priority of the given IRQ in the NVIC
