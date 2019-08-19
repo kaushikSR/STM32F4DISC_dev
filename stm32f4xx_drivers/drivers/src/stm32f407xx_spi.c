@@ -38,56 +38,57 @@ void SPI_Init(SPI_Handle_t* pSPIHandle) {
 
 	/*Mode*/
 	if (pSPIHandle->SPIConfig.SPI_DeviceMode) {
-		pSPIHandle->pSPIx->CR1 |= (1 << MSTR);
+		pSPIHandle->pSPIx->CR1 |= (MSTR);
 	} else {
-		pSPIHandle->pSPIx->CR1 &= ~(1 << MSTR);
+		pSPIHandle->pSPIx->CR1 &= ~(MSTR);
 	}
 	/*BusConfig*/
 	if (pSPIHandle->SPIConfig.SPI_BusConfig == BIDI_TXRX) {
-		pSPIHandle->pSPIx->CR1 &= ~(BIT15); // 2 line unidirectional
+		pSPIHandle->pSPIx->CR1 &= ~(BIDI_MODE); // 2 line unidirectional
 	} else if (pSPIHandle->SPIConfig.SPI_BusConfig == UNIDI_RX) {
-		pSPIHandle->pSPIx->CR1 |= (BIT15); // 1 line Bidirectional
-		pSPIHandle->pSPIx->CR1 &= ~(BIT14); // Receive-Only mode
+		pSPIHandle->pSPIx->CR1 |= (BIDI_MODE); // 1 line Bidirectional
+		pSPIHandle->pSPIx->CR1 &= ~(BIDI_OE); // Receive-Only mode
 	} else if (pSPIHandle->SPIConfig.SPI_BusConfig == UNIDI_TX) {
-		pSPIHandle->pSPIx->CR1 |= (BIT15); // 1 line Bidirectional
-		pSPIHandle->pSPIx->CR1 |= (BIT14); //Transmit-Only mode
+		pSPIHandle->pSPIx->CR1 |= (BIDI_MODE); // 1 line Bidirectional
+		pSPIHandle->pSPIx->CR1 |= (BIDI_OE); //Transmit-Only mode
 	} else if (pSPIHandle->SPIConfig.SPI_BusConfig == BIDI_RX) {
-		pSPIHandle->pSPIx->CR1 &= ~(BIT15); // 2 line unidirectional
-		pSPIHandle->pSPIx->CR1 |= (BIT10); // Receive-Only
+		pSPIHandle->pSPIx->CR1 &= ~(BIDI_MODE); // 2 line unidirectional
+		pSPIHandle->pSPIx->CR1 |= (RX_ONLY); // Receive-Only
 	}
 	/*ClockSpeed*/
 	pSPIHandle->pSPIx->CR1 &= ~(7U << BR); //clearing 3 bits [5:3]
 	pSPIHandle->pSPIx->CR1 |= (pSPIHandle->SPIConfig.SPI_SclkSpeed << BR);
 	/*Data Frame*/
 	if (pSPIHandle->SPIConfig.SPI_DFF) {
-		pSPIHandle->pSPIx->CR1 |= (1 << DFF);
+		pSPIHandle->pSPIx->CR1 |= (DFF);
 	} else {
-		pSPIHandle->pSPIx->CR1 &= ~(1 << DFF);
+		pSPIHandle->pSPIx->CR1 &= ~(DFF);
 	}
 	/*Clock Polarity*/
 	if (pSPIHandle->SPIConfig.SPI_CPOL) {
-		pSPIHandle->pSPIx->CR1 |= (1 << CPOL);
+		pSPIHandle->pSPIx->CR1 |= (CPOL);
 	} else {
-		pSPIHandle->pSPIx->CR1 &= ~(1 << CPOL);
+		pSPIHandle->pSPIx->CR1 &= ~(CPOL);
 	}
 	/*Clock Phase*/
 	if (pSPIHandle->SPIConfig.SPI_CPHA) {
-		pSPIHandle->pSPIx->CR1 |= (1 << CPHA);
+		pSPIHandle->pSPIx->CR1 |= (CPHA);
 	} else {
-		pSPIHandle->pSPIx->CR1 &= ~(1 << CPHA);
+		pSPIHandle->pSPIx->CR1 &= ~(CPHA);
 	}
 	/*Software slave management*/
 	if (pSPIHandle->SPIConfig.SPI_SSM) {
-		pSPIHandle->pSPIx->CR1 |= (1 << SSM);
+		pSPIHandle->pSPIx->CR1 |= (SSM);
 	} else {
-		pSPIHandle->pSPIx->CR1 &= ~(1 << SSM);
+		pSPIHandle->pSPIx->CR1 &= ~(SSM);
 	}
 	/*slave select information*/
 	if (pSPIHandle->SPIConfig.SPI_SSI) {
-		pSPIHandle->pSPIx->CR1 |= (1 << SSI);
+		pSPIHandle->pSPIx->CR1 |= (SSI);
 	} else {
-		pSPIHandle->pSPIx->CR1 &= ~(1 << SSI);
+		pSPIHandle->pSPIx->CR1 &= ~(SSI);
 	}
+
 }
 
 /*@brief: This function helps to deinitialize the SPI peripheral
@@ -108,14 +109,26 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx) {
 	}
 }
 
-void SPI_Enable(SPI_RegDef_t *pSPIx) {
-	pSPIx->CR1 |= (BIT6);
+
+/*@brief: This function helps to enable/disable the SPI peripheral
+ *@param[in] : A pointer to the SPI Handle data structure
+ *@param[in] : ENABLE/DISABLE
+ *@return : None
+ * */
+void SPI_Peri_Config(SPI_RegDef_t *pSPIx, status ENorDI) {
+	if(ENorDI){pSPIx->CR1 |= (SPE);}else{pSPIx->CR1 &= ~(SPE);}
 }
 
-void SPI_Disable(SPI_RegDef_t *pSPIx) {
-	pSPIx->CR1 &= ~(BIT6);
-}
 
+/*@brief: This function helps to return the status of the flag in the SPI peripheral SR register
+ *@param[in] : A pointer to the SPI Handle data structure
+ *@param[in] : Flag
+ *@return : None
+ * */
+
+status SPI_GetFlagStatus(SPI_RegDef_t *pSPIx , SPI_SR Flag){
+	return (pSPIx->SR & Flag);
+}
 
 /*@brief: These functions can be used to send/receive data (Polling/Blocking method)
  *@param[in] : A pointer to the SPI base address
@@ -125,27 +138,25 @@ void SPI_Disable(SPI_RegDef_t *pSPIx) {
  * */
 
 void SPI_SendData(SPI_RegDef_t *pSPIx, uint8_t *pTxBuffer, uint32_t Len) {
-	SPI_Enable(pSPIx);
 	while (Len > 0) {
-		while (!(pSPIx->SR & BIT1))
+		while (!(pSPIx->SR & TXE))
 			; // wait till TXE flag is set/Tx Buffer is empty
-		if (pSPIx->CR1 & BIT11) { // 16-BIT
+		if (pSPIx->CR1 & DFF) { // 16-BIT
 			pSPIx->DR = *((uint16_t*) pTxBuffer);
 			Len -= 2;
 			pTxBuffer += 2;
 		} else { // 8-BIT
-			pSPIx->DR = *pTxBuffer;
+			pSPIx->DR = (uint8_t)(*pTxBuffer);
 			Len--;
 			pTxBuffer++;
 		}
 	}
 }
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len) {
-	SPI_Enable(pSPIx);
 	while (Len > 0) {
-		while (!(pSPIx->SR & BIT0))
+		while (!(SPI_GetFlagStatus(pSPIx,RXNE)))
 			; // wait till RXE flag is set/Rx Buffer is empty
-		if (pSPIx->CR1 & BIT11) { // 16-BIT
+		if (pSPIx->CR1 & DFF) { // 16-BIT
 			*((uint16_t*) pRxBuffer) = pSPIx->DR;
 			Len -= 2;
 			pRxBuffer += 2;
@@ -157,7 +168,23 @@ void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len) {
 	}
 }
 
-/*
+
+/*@brief: This function helps to enable/disable the SSOE pin of CR2 register
+ *@param[in] : A pointer to the SPI Handle data structure
+ *@param[in] : ENABLE/DISABLE
+ *@return : None
+ *@Note : Enable it when using master mode to allow NSS to output 0
+ * */
+
+void SPI_SSOE_Config(SPI_RegDef_t *pSPIx,status ENorDI){
+	if(ENorDI){
+		pSPIx->CR2 |= (SSOE);
+	}
+}
+
+
+
+/*SPI_RegDef_t *pSPIx
  * @brief : This function ENABLES/DISABLES the given IRQ on the NVIC
  *
  * @param[in]: IRQ/Position number

@@ -54,23 +54,43 @@ typedef enum{
 
 /*SPI_CR1 Register*/
 typedef enum{
-	CPHA = 0,
-	CPOL = 1,
-	MSTR = 2,
-	BR = 3,
-	SPE = 6,
-	LSBFIRST = 7,
-	SSI = 8,
-	SSM = 9,
-	RX_ONLY = 10,
-	DFF = 11,
-	CRC_NEXT = 12,
-	CRC_EN = 13,
-	BIDI_OE = 14,
-	BIDI_MODE = 15
+	CPHA = BIT0,
+	CPOL = BIT1,
+	MSTR = BIT2,
+	BR = BIT3,
+	SPE = BIT6,
+	LSBFIRST = BIT7,
+	SSI = BIT8,
+	SSM = BIT9,
+	RX_ONLY = BIT10,
+	DFF = BIT11,
+	CRC_NEXT = BIT12,
+	CRC_EN = BIT13,
+	BIDI_OE = BIT14,
+	BIDI_MODE = BIT15
 }SPI_CR1;
 
+typedef enum{
+	RXDMAEN = BIT0,
+	TXDMAEN = BIT1,
+	SSOE = BIT2,
+	FRF = BIT4,
+	ERRIE = BIT5,
+	RXNEIE = BIT6,
+	TXEIE = BIT7,
+}SPI_CR2;
 
+typedef enum{
+	RXNE = BIT0,
+	TXE = BIT1,
+	CHSIDE = BIT2,
+	UDR = BIT3,
+	CRCERR = BIT4,
+	MODF = BIT5,
+	OVR = BIT6,
+	BSY = BIT7,
+	FRE = BIT8,
+}SPI_SR;
 
 /*
  *  Configuration structure for SPIx peripheral
@@ -135,6 +155,31 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
 
 void SPI_SendData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer, uint32_t Len);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
+
+/*@brief: This function helps to enable/disable the SSOE pin of CR2 register
+ *@param[in] : A pointer to the SPI Handle data structure
+ *@param[in] : ENABLE/DISABLE
+ *@return : None
+ *@Note : Enable it when using master mode to allow NSS to output 0
+ * */
+
+void SPI_SSOE_Config(SPI_RegDef_t *pSPIx,status ENorDI);
+
+/*@brief: This function helps to enable/disable the SPI peripheral
+ *@param[in] : A pointer to the SPI Handle data structure
+ *@param[in] : ENABLE/DISABLE
+ *@return : None
+ * */
+void SPI_Peri_Config(SPI_RegDef_t *pSPIx, status ENorDI);
+
+/*@brief: This function helps to return the status of the flag in the SPI peripheral SR register
+ *@param[in] : A pointer to the SPI Handle data structure
+ *@param[in] : Flag
+ *@return : None
+ * */
+
+status SPI_GetFlagStatus(SPI_RegDef_t *pSPIx , SPI_SR Flag);
+
 
 /*
  * @brief : This function ENABLES/DISABLES the given IRQ on the NVIC
