@@ -21,7 +21,6 @@ void ButtonPressLED() {
 	pGpio_LED.GPIO_PinConfig.GPIO_PinOPType = GPIO_OP_TYPE_PP;
 	pGpio_LED.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 	pGpio_LED.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_MEDIUM;
-	GPIO_PeriClockControl(GPIOD, ENABLE);
 	GPIO_Init(&pGpio_LED);
 
 	GPIO_Handle_t pGpio_BUTTON;
@@ -30,7 +29,6 @@ void ButtonPressLED() {
 	pGpio_BUTTON.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN0;
 	pGpio_BUTTON.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_NO_PUPD;
 	pGpio_BUTTON.GPIO_PinConfig.GPIO_PinSpeed = GPIO_OP_SPEED_HIGH;
-	GPIO_PeriClockControl(GPIOA, ENABLE);
 	GPIO_Init(&pGpio_BUTTON);
 
 	GPIO_IRQITConfig(EXTI0,ENABLE);

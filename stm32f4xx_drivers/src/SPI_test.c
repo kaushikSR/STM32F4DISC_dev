@@ -43,8 +43,9 @@ int main() {
 
 
 	char buf[] = "Hello World";
+	SPI_Peri_Config(SPI1,ENABLE);
 	SPI_SendData(SPI1, (uint8_t*)buf,sizeof(buf));
-
+	SPI_Peri_Config(SPI1,DISABLE);
 	while (1)
 		;
 
