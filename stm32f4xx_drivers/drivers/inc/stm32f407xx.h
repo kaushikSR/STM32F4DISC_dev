@@ -12,6 +12,7 @@
 #define __IO						volatile
 #define __I							volatile const
 
+#define __weak						__attribute__((weak))
 /***************************************** CPU SPECIFIC DETAILS : START *******************************************/
 /*
  * Nested Vector Interrupt Controller (NVIC)
@@ -373,8 +374,11 @@ typedef enum {
 	EXTI2 = 8U,
 	EXTI3 = 9U,
 	EXTI4 = 10U,
-	EXTI9_5 = 23,
-	EXTI15_10 = 40
+	EXTI9_5 = 23U,
+	SPI1_IRQ = 35U,
+	SPI2_IRQ = 36U,
+	EXTI15_10 = 40U,
+	SPI3_IRQ = 51U
 } IRQ_Posn;
 
 /*Status Enumeration*/

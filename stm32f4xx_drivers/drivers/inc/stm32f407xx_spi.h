@@ -9,6 +9,7 @@
 #define INC_STM32F407XX_SPI_H_
 
 #include "stm32f407xx.h"
+#include "stddef.h"
 
 /***Configuration Enums***/
 
@@ -49,6 +50,21 @@ typedef enum{
 	LEADING_EDGE = 0,
 	TRAILING_EDGE = 1
 }SPI_ClkPhase;
+
+/*SPI application states*/
+typedef enum{
+	SPI_READY = 0,
+	SPI_RX_BUSY = 1,
+	SPI_TX_BUSY = 2
+}SPI_State;
+
+/*SPI Application events*/
+
+typedef enum{
+	SPI_TX_COMPLETE = 0,
+	SPI_RX_COMPLETE = 1,
+	SPI_OVR_ERROR = 2
+}SPI_App_Events;
 
 /***Register Enumerations ***/
 
@@ -112,12 +128,12 @@ typedef struct {
 typedef struct {
 	SPI_RegDef_t *pSPIx; /*!< This holds the base address of SPIx(x:1,2,3) peripheral >*/
 	SPI_Config_t SPIConfig;
-//	uint8_t *pTxBuffer; /* !< To store the app. Tx buffer address > */
-//	uint8_t *pRxBuffer; /* !< To store the app. Rx buffer address > */
-//	uint32_t TxLen; /* !< To store Tx len > */
-//	uint32_t RxLen; /* !< To store Tx len > */
-//	uint8_t TxState; /* !< To store Tx state > */
-//	uint8_t RxState; /* !< To store Rx state > */
+	uint8_t *pTxBuffer; /* !< To store the app. Tx buffer address > */
+	uint8_t *pRxBuffer; /* !< To store the app. Rx buffer address > */
+	uint32_t TxLen; /* !< To store Tx len > */
+	uint32_t RxLen; /* !< To store Tx len > */
+	uint8_t TxState; /* !< To store Tx state > */
+	uint8_t RxState; /* !< To store Rx state > */
 } SPI_Handle_t;
 
 #endif /* INC_STM32F407XX_SPI_H_ */
@@ -156,6 +172,16 @@ void SPI_DeInit(SPI_RegDef_t *pSPIx);
 void SPI_SendData(SPI_RegDef_t *pSPIx,uint8_t *pTxBuffer, uint32_t Len);
 void SPI_ReceiveData(SPI_RegDef_t *pSPIx, uint8_t *pRxBuffer, uint32_t Len);
 
+/*@brief: These functions can be used to send/receive data (Interrupt method)
+ *@param[in] : A pointer to the SPI base address
+ *@param[in] : A pointer to the Tx/Rx Buffer
+ *@param[in] : Length of data/buffer
+ *@return : SPI_Status
+ * */
+
+SPI_State SPI_SendDataIT(SPI_Handle_t *pSPIHandle,uint8_t *pTxBuffer, uint32_t Len);
+SPI_State SPI_ReceiveDataIT(SPI_Handle_t *pSPIHandle, uint8_t *pRxBuffer, uint32_t Len);
+
 /*@brief: This function helps to enable/disable the SSOE pin of CR2 register
  *@param[in] : A pointer to the SPI Handle data structure
  *@param[in] : ENABLE/DISABLE
@@ -188,7 +214,7 @@ status SPI_GetFlagStatus(SPI_RegDef_t *pSPIx , SPI_SR Flag);
  * @param[in]: ENABLE/DISABLE
  * @return : None
  */
-void SPI_IRQITConfig(uint8_t IRQNumber, status EnOrDi);
+void SPI_IRQITConfig(IRQ_Posn IRQNumber, status EnOrDi);
 
 /*
  * @brief : This function sets the priority of the given IRQ in the NVIC
@@ -197,7 +223,7 @@ void SPI_IRQITConfig(uint8_t IRQNumber, status EnOrDi);
  * @param[in]: Priority
  * @return : None
  */
-void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
+void SPI_IRQPriorityConfig(IRQ_Posn IRQNumber, uint8_t IRQPriority);
 
 /*
  * @brief : This function clears the pending register of the EXTI controller for a particular EXTI line
@@ -207,4 +233,4 @@ void SPI_IRQPriorityConfig(uint8_t IRQNumber, uint8_t IRQPriority);
  *
  * @Note : This must be called in all ISR functions for EXTI lines indicating the interrupt/event has been serviced
  */
-void SPI_IRQHandle(uint8_t EXTI_line) ;
+void SPI_IRQHandling(SPI_Handle_t *pHandle);
