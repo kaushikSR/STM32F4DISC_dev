@@ -7,7 +7,8 @@
 
 #ifndef INC_STM32F407XX_H_
 #define INC_STM32F407XX_H_
-#include<stdint.h>
+#include <stdint.h>
+#include <stddef.h>
 
 #define __IO						volatile
 #define __I							volatile const
@@ -293,15 +294,23 @@ typedef struct {
 #define I2C2								((I2C_RegDef_t*)I2C2_BASEADDR)
 #define I2C3								((I2C_RegDef_t*)I2C3_BASEADDR)
 
-/***Clock ENABLE/DISABLE macros for I2C***/
+#define RESOLVE_I2C(x)						( (x) == I2C1 ? BIT21: \
+											(x) == I2C2 ? BIT22: \
+											(x) == I2C3 ? BIT23:-1)
 
-#define I2C1_PLCK_EN()						(RCC->APB1ENR |=(BIT21))
-#define I2C2_PLCK_EN()						(RCC->APB1ENR |=(BIT22))
-#define I2C3_PLCK_EN()						(RCC->APB1ENR |=(BIT23))
+/***Clock ENABLE/DISABLE macros for I2C
+ * @param[in] I2Cx(1,2,3)
+ ***/
 
-#define I2C1_PLCK_DI()						(RCC->APB1ENR &=~(BIT21))
-#define I2C2_PLCK_DI()						(RCC->APB1ENR &=~(BIT22))
-#define I2C3_PLCK_DI()						(RCC->APB1ENR &=~(BIT23))
+#define I2C_PCLK_EN(x)						(RCC->APB1ENR |=(RESOLVE_I2C((x))))
+#define I2C_PCLK_DI(x)						(RCC->APB1ENR &=~(RESOLVE_I2C((x))))
+
+/***I2C reset Macro
+ * @param[in] I2Cx(1,2,3)
+ ***/
+#define I2C_PERI_DEINIT(x)					do{RCC->APB1RSTR |=(RESOLVE_I2C((x)));\
+											RCC->APB1RSTR &=~(RESOLVE_I2C((x)));}while(0)
+
 /*********************************Serial peripheral interface (SPI)**************************************/
 
 typedef struct {
@@ -375,15 +384,36 @@ typedef enum {
 	EXTI3 = 9U,
 	EXTI4 = 10U,
 	EXTI9_5 = 23U,
+	I2C1_EV = 31U,
+	I2C1_ER = 32U,
+	I2C2_EV = 33U,
+	I2C2_ER = 34U,
 	SPI1_IRQ = 35U,
 	SPI2_IRQ = 36U,
 	EXTI15_10 = 40U,
-	SPI3_IRQ = 51U
+	SPI3_IRQ = 51U,
+	I2C3_EV = 72U,
+	I2C3_ER = 73U
 } IRQ_Posn;
 
 /*Status Enumeration*/
 typedef enum {
 	ENABLE = 1, SET = 1, DISABLE = 0, RESET = 0
 } status;
+
+/*CLOCK SOURCE*/
+
+typedef enum{
+	HSI = 0,
+	HSE = 1,
+	PLL = 2,
+	NO_CLK = 3
+}SYS_CLK_SRC;
+
+
+#include "stm32f407xx_gpio.h"
+#include "stm32f407xx_spi.h"
+#include "stm32f407xx_i2c.h"
+#include "stm32f407xx_rcc.h"
 
 #endif /* INC_STM32F407XX_H_ */
