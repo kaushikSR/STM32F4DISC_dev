@@ -9,7 +9,6 @@
 #define INC_STM32F407XX_SPI_H_
 
 #include "stm32f407xx.h"
-#include "stddef.h"
 
 /***Configuration Enums***/
 
@@ -136,7 +135,7 @@ typedef struct {
 	uint8_t RxState; /* !< To store Rx state > */
 } SPI_Handle_t;
 
-#endif /* INC_STM32F407XX_SPI_H_ */
+
 
 /*****************************************SUPPORTED APIs*********************************************/
 
@@ -234,3 +233,5 @@ void SPI_IRQPriorityConfig(IRQ_Posn IRQNumber, uint8_t IRQPriority);
  * @Note : This must be called in all ISR functions for EXTI lines indicating the interrupt/event has been serviced
  */
 void SPI_IRQHandling(SPI_Handle_t *pHandle);
+
+#endif /* INC_STM32F407XX_SPI_H_ */
