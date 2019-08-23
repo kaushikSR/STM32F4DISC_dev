@@ -106,6 +106,25 @@ typedef enum{
 	I2C_READY = 2
 }I2C_STATE;
 
+
+/*I2C Events*/
+
+typedef enum{
+	I2C_EV_RX_CMPLT = 0,
+	I2C_EV_TX_CMPLT = 1,
+	I2C_EV_STOP = 2,
+	I2C_EV_DATA_REQ = 3,
+	I2C_EV_DATA_RCV = 4
+}I2C_EVENTS;
+
+typedef enum{
+	I2C_ERROR_BERR = 0,
+	I2C_ERROR_ARLO = 1,
+	I2C_ERROR_AF = 2,
+	I2C_ERROR_OVR = 3,
+	I2C_ERROR_TIMEOUT = 4
+}I2C_ERROR;
+
 /*
  * Configuration structure for I2Cx peripheral
  */
