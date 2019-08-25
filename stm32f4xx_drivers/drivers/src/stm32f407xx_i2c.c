@@ -811,6 +811,10 @@ void I2C_ER_IRQHandling(I2C_Handle_t *pI2CHandle)
 
 }
 
+__weak void I2C_ApplicationEventCallback(I2C_Handle_t *pI2CHandle,uint8_t AppEv){
+
+}
+
 
 void I2C_SlaveEnableDisableCallbackEvents(I2C_RegDef_t *pI2Cx,uint8_t EnorDi)
 {

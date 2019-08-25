@@ -37,6 +37,7 @@ typedef enum {
 
 uint32_t  RCC_GetPLLOutputClock();
 uint32_t RCC_GetPCLK1Value(void);
+uint32_t RCC_GetPCLK2Value(void);
 
 #endif /* INC_STM32F407XX_RCC_H_ */
 

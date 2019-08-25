@@ -352,6 +352,24 @@ typedef struct {
 #define SPI2_DEINIT() 						do{ RCC->APB1RSTR |= (BIT14); RCC->APB1RSTR &= ~(BIT14);}while(0)
 #define SPI3_DEINIT()						do{ RCC->APB1RSTR |= (BIT15); RCC->APB1RSTR &= ~(BIT15);}while(0)
 
+/***************Universal synchronous asynchronous receiver transmitter (USART)**************/
+
+typedef struct {
+	__IO uint32_t SR;/*Status register (USART_SR) Address offset: 0x00*/
+	__IO uint32_t DR;/*Data register (USART_DR) Address offset: 0x04*/
+	__IO uint32_t BRR;/*Baud rate register (USART_BRR).Note: The baud counters stop counting if the TE or RE bits are disabled respectively. Address offset: 0x08*/
+	__IO uint32_t CR1;/*Control register 1 (USART_CR1) Address offset: 0x0C*/
+	__IO uint32_t CR2;/*Control register 2 (USART_CR2) Address offset: 0x10*/
+	__IO uint32_t CR3;/*Control register 3 (USART_CR3) Address offset: 0x14*/
+	__IO uint32_t GTPR;/*Guard time and prescaler register (USART_GTPR) Address offset: 0x18*/
+}USART_RegDef_t;
+
+#define USART1								((USART_RegDef_t*)(USART1_BASEADDR))
+#define USART2								((USART_RegDef_t*)(USART2_BASEADDR))
+#define USART3								((USART_RegDef_t*)(USART3_BASEADDR))
+#define UART4								((USART_RegDef_t*)(UART4_BASEADDR))
+#define UART5								((USART_RegDef_t*)(UART5_BASEADDR))
+#define USART6								((USART_RegDef_t*)(USART6_BASEADDR))
 /***Clock ENABLE/DISABLE macros for UART/USART ***/
 
 #define USART1_PCLK_EN()					(RCC->APB2ENR |=(BIT4))
@@ -390,8 +408,14 @@ typedef enum {
 	I2C2_ER = 34U,
 	SPI1_IRQ = 35U,
 	SPI2_IRQ = 36U,
+	USART1_IRQ = 37U,
+	USART2_IRQ = 38U,
+	USART3_IRQ = 39U,
 	EXTI15_10 = 40U,
 	SPI3_IRQ = 51U,
+	UART4_IRQ = 52U,
+	UART5_IRQ = 53U,
+	USART6_IRQ = 71U,
 	I2C3_EV = 72U,
 	I2C3_ER = 73U
 } IRQ_Posn;
@@ -415,5 +439,6 @@ typedef enum{
 #include "stm32f407xx_spi.h"
 #include "stm32f407xx_i2c.h"
 #include "stm32f407xx_rcc.h"
+#include "stm32f407xx_usart.h"
 
 #endif /* INC_STM32F407XX_H_ */

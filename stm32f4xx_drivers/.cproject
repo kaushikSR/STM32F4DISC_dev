@@ -76,13 +76,13 @@
 							</tool>
 						</toolChain>
 					</folderInfo>
-					<fileInfo id="fr.ac6.managedbuild.config.gnu.cross.exe.debug.103529414.627548742" name="i2c_master_rx_testingIT.c" rcbsApplicability="disable" resourcePath="src/i2c_master_rx_testingIT.c" toolsToInvoke="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.594327622.1026024171">
-						<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.594327622.1026024171" name="MCU GCC Compiler" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.594327622"/>
-						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.2069003598" name="Resource Custom Build Step">
-							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.1740839185" name="Resource Custom Build Step Input Type">
+					<fileInfo id="fr.ac6.managedbuild.config.gnu.cross.exe.debug.103529414.763597535" name="i2c_slave_tx_testing.c" rcbsApplicability="disable" resourcePath="src/i2c_slave_tx_testing.c" toolsToInvoke="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.594327622.1012681044">
+						<tool id="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.594327622.1012681044" name="MCU GCC Compiler" superClass="fr.ac6.managedbuild.tool.gnu.cross.c.compiler.594327622"/>
+						<tool customBuildStep="true" id="org.eclipse.cdt.managedbuilder.ui.rcbs.995399630" name="Resource Custom Build Step">
+							<inputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.inputtype.41598267" name="Resource Custom Build Step Input Type">
 								<additionalInput kind="additionalinputdependency" paths=""/>
 							</inputType>
-							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.749742504" name="Resource Custom Build Step Output Type"/>
+							<outputType id="org.eclipse.cdt.managedbuilder.ui.rcbs.outputtype.1384847650" name="Resource Custom Build Step Output Type"/>
 						</tool>
 					</fileInfo>
 					<folderInfo id="fr.ac6.managedbuild.config.gnu.cross.exe.debug.103529414.417568082" name="/" resourcePath="drivers">
@@ -111,7 +111,7 @@
 					</folderInfo>
 					<sourceEntries>
 						<entry flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="drivers"/>
-						<entry excluding="i2c_master_rx_testingIT.c|i2c_master_rx_testing.c|i2c_master_tx_testing.c|SPI_cmd_handle_it.c|SPI_cmd_handle.c|SPI_test.c|SPI_ArduinoSlave.c|External_Interrupt_Button.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
+						<entry excluding="i2c_slave_tx_testing.c|i2c_master_rx_testingIT.c|i2c_master_rx_testing.c|i2c_master_tx_testing.c|SPI_cmd_handle_it.c|SPI_cmd_handle.c|SPI_test.c|SPI_ArduinoSlave.c|External_Interrupt_Button.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="src"/>
 						<entry excluding="sysmem.c" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name="startup"/>
 					</sourceEntries>
 				</configuration>
