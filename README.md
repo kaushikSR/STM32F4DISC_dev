@@ -1,4 +1,4 @@
-Playing around with STM32F4DISC board with ARM Cortex-M4 
+STM32F4DISC board with ARM Cortex-M4 processor 
 
 Embedded peripheral driver development (drivers/)
 1) GPIO
