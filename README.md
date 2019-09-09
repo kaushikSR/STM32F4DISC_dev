@@ -5,6 +5,7 @@ Embedded peripheral driver development (drivers/)
 2) SPI
 3) I2C
 4) USART
+5) RCC
 
 src/ contains test applications
 
